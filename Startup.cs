@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SetApi.Context;
 
 namespace SetApi
 {
@@ -30,6 +31,8 @@ namespace SetApi
         {
             services.AddDbContext<TodoContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AvatarChartContext>(options =>
+           options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -55,7 +58,12 @@ namespace SetApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(name: "AvatarCharts",
+                   pattern: "AvatarCharts/{*article}",
+                   defaults: new { controller = "AvatarCharts", action = "Article" });
+                endpoints.MapControllerRoute(name: "TodoItems",
+                            pattern: "TodoItems/{*article}",
+                   defaults: new { controller = "AvatarCharts", action = "Article" });
             });
         }
     }
